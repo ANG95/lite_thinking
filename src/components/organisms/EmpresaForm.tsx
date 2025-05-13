@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Typography, List, Card, message } from 'antd';
+import { Form, Input, Button, Typography, List, Card, message, Popconfirm } from 'antd';
 
 export interface Empresa {
   nit: string;
@@ -23,6 +23,13 @@ const EmpresaForm = () => {
     localStorage.setItem('empresas', JSON.stringify(updatedEmpresas));
     form.resetFields();
     message.success('Empresa registrada exitosamente');
+  };
+
+  const handleDelete = (nit: string) => {
+    const updatedEmpresas = empresas.filter(empresa => empresa.nit !== nit);
+    setEmpresas(updatedEmpresas);
+    localStorage.setItem('empresas', JSON.stringify(updatedEmpresas));
+    message.success('Empresa eliminada exitosamente');
   };
 
   return (
@@ -73,7 +80,18 @@ const EmpresaForm = () => {
           bordered
           dataSource={empresas}
           renderItem={(empresa) => (
-            <List.Item>
+            <List.Item
+              actions={[
+                <Popconfirm
+                  title="¿Estás seguro de eliminar esta empresa?"
+                  onConfirm={() => handleDelete(empresa.nit)}
+                  okText="Sí"
+                  cancelText="No"
+                >
+                  <Button type='dashed' color='danger'>Eliminar</Button>
+                </Popconfirm>
+              ]}
+            >
               <strong>{empresa.nombre}</strong> - {empresa.nit}
             </List.Item>
           )}

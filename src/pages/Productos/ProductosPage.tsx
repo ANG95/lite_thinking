@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Form, Input, Button, Select, InputNumber, Row, Col } from 'antd';
 import MainLayout from "../../layouts/MainLayout";
 
@@ -7,6 +7,14 @@ const { Option } = Select;
 const ProductosPage = () => {
   const [form] = Form.useForm();
   const [productos, setProductos] = useState<any[]>([]);
+  const [empresas, setEmpresas] = useState<any[]>([]);
+
+  useEffect(() => {
+    const storedEmpresas = localStorage.getItem('empresas');
+    if (storedEmpresas) {
+      setEmpresas(JSON.parse(storedEmpresas));
+    }
+  }, []);
 
   const handleSubmit = (values: any) => {
     setProductos([...productos, values]);
@@ -91,9 +99,11 @@ const ProductosPage = () => {
               rules={[{ required: true, message: 'Por favor selecciona la empresa' }]}
             >
               <Select placeholder="Selecciona una empresa">
-                <Option value="empresa1">Empresa 1</Option>
-                <Option value="empresa2">Empresa 2</Option>
-                <Option value="empresa3">Empresa 3</Option>
+                {empresas.map((empresa) => (
+                  <Option key={empresa.nit} value={empresa.nit}>
+                    {empresa.nombre}
+                  </Option>
+                ))}
               </Select>
             </Form.Item>
           </Col>
