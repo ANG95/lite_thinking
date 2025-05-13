@@ -1,27 +1,21 @@
 import React from 'react';
-import Header from '../components/atoms/Header';
+import { Layout } from 'antd';
 import Sidebar from '../components/atoms/Sidebar';
+import AppHeader from '../components/atoms/Header';
 
-const layoutStyles = {
-  display: 'flex',
-  minHeight: '100vh',
-};
-
-const contentStyles = {
-  flex: 1,
-  padding: '0rem',
-  backgroundColor: '#f9f9f9',
-};
+const { Content } = Layout;
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div style={layoutStyles}>
+    <Layout>
       <Sidebar />
-      <div style={{ flex: 1 }}>
-        <Header />
-        <main style={contentStyles}>{children}</main>
-      </div>
-    </div>
+      <Layout style={{ marginLeft: 200, }}>
+        <AppHeader />
+        <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', height: 'calc(88vh)' }}>
+          {children}
+        </Content>
+      </Layout>
+    </Layout>
   );
 };
 

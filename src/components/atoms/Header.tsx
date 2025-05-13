@@ -1,13 +1,16 @@
-import React from 'react';
+import { Layout, Typography } from 'antd';
 
-const headerStyles = {
-  background: '#1976d2',
-  color: '#fff',
-  padding: '1rem',
+const { Header } = Layout;
+const { Title } = Typography;
+
+const AppHeader = () => {
+  return (
+    <Header style={{ background: '#1890ff', padding: '0 1rem' }}>
+      <Title level={4} style={{ color: '#fff', margin: 0, lineHeight: '64px' }}>
+        Lite Thinking App - Panel
+      </Title>
+    </Header>
+  );
 };
 
-const Header = () => {
-  return <header style={headerStyles}>Lite Thinking App - Panel</header>;
-};
-
-export default Header;
+export default AppHeader;

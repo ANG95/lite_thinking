@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Form, Input, Button, Typography, List, Card, message } from 'antd';
 
 export interface Empresa {
   nit: string;
@@ -7,78 +8,77 @@ export interface Empresa {
   telefono: string;
 }
 
-const EmpresaForm = () => {
-  const [formData, setFormData] = useState<Empresa>({
-    nit: '',
-    nombre: '',
-    direccion: '',
-    telefono: '',
-  });
+const { Title } = Typography;
 
+const EmpresaForm = () => {
+  const [form] = Form.useForm();
   const [empresas, setEmpresas] = useState<Empresa[]>(() => {
     const stored = localStorage.getItem('empresas');
     return stored ? JSON.parse(stored) : [];
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.nit || !formData.nombre) {
-      alert('NIT y Nombre son obligatorios');
-      return;
-    }
-
-    const updatedEmpresas = [...empresas, formData];
+  const handleSubmit = (values: Empresa) => {
+    const updatedEmpresas = [...empresas, values];
     setEmpresas(updatedEmpresas);
     localStorage.setItem('empresas', JSON.stringify(updatedEmpresas));
-    setFormData({ nit: '', nombre: '', direccion: '', telefono: '' });
+    form.resetFields();
+    message.success('Empresa registrada exitosamente');
   };
 
   return (
-    <div>
-      <h2>Registrar Empresa</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          name="nit"
-          placeholder="NIT"
-          value={formData.nit}
-          onChange={handleChange}
-          required
-        />
-        <input
-          name="nombre"
-          placeholder="Nombre"
-          value={formData.nombre}
-          onChange={handleChange}
-          required
-        />
-        <input
-          name="direccion"
-          placeholder="Dirección"
-          value={formData.direccion}
-          onChange={handleChange}
-        />
-        <input
-          name="telefono"
-          placeholder="Teléfono"
-          value={formData.telefono}
-          onChange={handleChange}
-        />
-        <button type="submit">Guardar</button>
-      </form>
+    <div style={{ maxWidth: 500, margin: '0 auto', paddingTop: 40 }}>
+      <Card>
+        <Title level={3}>Registrar Empresa</Title>
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleSubmit}
+          initialValues={{ nit: '', nombre: '', direccion: '', telefono: '' }}
+        >
+          <Form.Item
+            label="NIT"
+            name="nit"
+            rules={[{ required: true, message: 'El NIT es obligatorio' }]}
+          >
+            <Input placeholder="NIT" />
+          </Form.Item>
 
-      <h3>Empresas registradas</h3>
-      <ul>
-        {empresas.map((e) => (
-          <li key={e.nit}>
-            <strong>{e.nombre}</strong> - {e.nit}
-          </li>
-        ))}
-      </ul>
+          <Form.Item
+            label="Nombre"
+            name="nombre"
+            rules={[{ required: true, message: 'El nombre es obligatorio' }]}
+          >
+            <Input placeholder="Nombre de la empresa" />
+          </Form.Item>
+
+          <Form.Item label="Dirección" name="direccion">
+            <Input placeholder="Dirección" />
+          </Form.Item>
+
+          <Form.Item label="Teléfono" name="telefono">
+            <Input placeholder="Teléfono" />
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" block>
+              Guardar
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
+
+      <div style={{ marginTop: 40 }}>
+        <Title level={4}>Empresas registradas</Title>
+        <List
+          bordered
+          dataSource={empresas}
+          renderItem={(empresa) => (
+            <List.Item>
+              <strong>{empresa.nombre}</strong> - {empresa.nit}
+            </List.Item>
+          )}
+        />
+      </div>
     </div>
   );
 };

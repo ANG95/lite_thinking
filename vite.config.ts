@@ -3,9 +3,9 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  root: '.', // Esto asegura que Vite busque en la raíz del proyecto
+  root: '.',
   build: {
-    outDir: 'dist', // Esta es la carpeta donde se construirá el proyecto
+    outDir: 'dist',
   },
   server: {
     port: 5173,
