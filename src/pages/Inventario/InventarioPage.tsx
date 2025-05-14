@@ -33,27 +33,31 @@ const InventarioPage = () => {
   };
 
   const sendPDFByEmail = async () => {
-    try {
-      const pdf = new jsPDF();
-      pdf.text('Inventario', 20, 10);
+  try {
+    const pdf = new jsPDF();
+    pdf.text('Inventario', 20, 10);
 
-      pdf.autoTable({
-        head: [['Código', 'Nombre', 'Características', 'Precio']],
-        body: productos.map(producto => [producto.codigo, producto.nombre, producto.caracteristicas, producto.precio]),
-      });
+    pdf.autoTable({
+      head: [['Código', 'Nombre', 'Características', 'Precio']],
+      body: productos.map(producto => [producto.codigo, producto.nombre, producto.caracteristicas, producto.precio]),
+    });
 
-      const pdfData = pdf.output('datauristring');
+    // Convertimos el PDF a base64 para enviarlo por correo
+    const pdfData = pdf.output('datauristring').split(',')[1];  // Elimina el prefijo "data:application/pdf;base64,"
+    
+    // Hacemos la petición POST al backend (FastAPI)
+    const response = await axios.post('http://localhost:8000/send-email', {
+      email,
+      pdfData,
+    });
 
-      await axios.post('https://localhost/send-email', {
-        email,
-        pdfData,
-      });
-
-      message.success('PDF enviado con éxito!');
-    } catch (error) {
-      message.error('Hubo un error al enviar el PDF.');
-    }
-  };
+    // Mostrar mensaje de éxito
+    message.success(response.data.message);
+  } catch (error) {
+    // Mostrar mensaje de error
+    message.error('Hubo un error al enviar el PDF.');
+  }
+};
 
   return (
     <MainLayout>

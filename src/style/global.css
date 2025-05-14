@@ -1,0 +1,28 @@
+/* global.css */
+
+/* Contenedor principal para alinear formulario y tabla */
+.container-form-table {
+    display: flex;
+    gap: 20px;
+    align-items: stretch;
+    margin-top: 20px;
+}
+
+/* Contenedor del formulario */
+.form-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Contenedor de la tabla */
+.table-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Botones debajo del formulario */
+.form-buttons {
+    margin-top: 10px;
+}

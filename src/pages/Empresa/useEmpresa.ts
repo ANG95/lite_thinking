@@ -10,23 +10,30 @@ const DataCompanyInitial = {
 interface saveCompanyParams {
   nit: string,
   companyName: string,
-  direccion: string,
+  address: string,
   phoneNumber: string
 }
 
 const useCompany = () => {
   const [dataCompany, setDataCompany] = useState(DataCompanyInitial);
 
-  const saveCompany = ({ nit, direccion, companyName, phoneNumber }: saveCompanyParams) => {
+  const saveCompany = ({ nit, companyName, address, phoneNumber }: saveCompanyParams) => {
     try {
       setDataCompany((prev) => ({
         ...prev,
         isLoading: true
       }))
+    //   const payload = {
+    //   nit,
+    //   companyName,
+    //   address,
+    //   phoneNumber
+    // };
+      // console.log('Payload enviadooooooo:', payload);
       const resultSaveCompany = axios.post('http:localhost:1995/saveCompany', {
         "nit": nit,
         "companyName": companyName,
-        "address": direccion,
+        "address": address,
         "phoneNumber": phoneNumber
       })
       setDataCompany((prev) => ({

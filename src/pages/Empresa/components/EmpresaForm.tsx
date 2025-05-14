@@ -3,9 +3,9 @@ import { Form, Input, Typography, message } from 'antd';
 
 export interface Empresa {
   nit: string;
-  nombre: string;
-  direccion: string;
-  telefono: string;
+  companyName: string;
+  address: string;
+  phoneNumber: string;
 }
 
 export interface EmpresaFormRef {
@@ -32,7 +32,7 @@ const EmpresaForm = forwardRef<EmpresaFormRef>((_, ref) => {
   };
 
   return (
-    <div style={{ maxWidth: 500, margin: '0 auto', paddingTop: 40 }}>
+    <div style={{ paddingRight: '20px'}}>
       <Title level={3}>Registrar Empresa</Title>
       <Form
         form={form}
@@ -50,17 +50,17 @@ const EmpresaForm = forwardRef<EmpresaFormRef>((_, ref) => {
 
         <Form.Item
           label="Nombre"
-          name="nombre"
+          name="companyName"
           rules={[{ required: true, message: 'El nombre es obligatorio' }]}
         >
           <Input placeholder="Nombre de la empresa" />
         </Form.Item>
 
-        <Form.Item label="Dirección" name="direccion">
+        <Form.Item label="Dirección" name="address">
           <Input placeholder="Dirección" />
         </Form.Item>
 
-        <Form.Item label="Teléfono" name="telefono">
+        <Form.Item label="Teléfono" name="phoneNumber">
           <Input placeholder="Teléfono" />
         </Form.Item>
       </Form>
